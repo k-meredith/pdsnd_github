@@ -299,12 +299,12 @@ def raw_data(df):
     # will ask for another entry if user inputs an unanticiapted response
     while True:
         # User input request
-        view_d = input('Would you like to view 5{} lines of raw data? (yes or no) \n'.format(follow_up)).lower()
+        view_raw_data = input('Would you like to view 5{} lines of raw data? (yes or no) \n'.format(follow_up)).lower()
         # if no, then breaks loop
-        if view_d == 'no':
+        if view_raw_data == 'no':
             break
         # if yes, then prints 5 rows of data
-        if view_d == 'yes':
+        if view_raw_data == 'yes':
             print(df.iloc[row :(row+5)])
             # adds more to the user input request
             follow_up = " more"
