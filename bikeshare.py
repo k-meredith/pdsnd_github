@@ -1,3 +1,18 @@
+"""
+April 19, 2021
+Bikeshare.py
+
+This code reads a .csv file as direceted by the user, filters it based upon user entry
+and then provides the user with usefull statistics.
+
+Program starts with a fucntion that gets user inputs, imports the data, then filters it based upon
+the user's entry. By filtering before we start calcualting statistics, this saves time.
+
+Each batch of statsitics is grouped underneath its own function, which is called upon in the main
+program. Please follow this format for future additions.
+
+"""
+
 import time
 import pandas as pd
 import numpy as np
@@ -72,7 +87,7 @@ def load_data(city, month, day):
     """
     # load data file into a dataframe
     df = pd.read_csv(CITY_DATA[city])
-   
+
     # convert the Start Time column to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
 
@@ -92,21 +107,21 @@ def load_data(city, month, day):
     if day != 'all':
         # filter by day of week to create the new dataframe
         df = df[df['day_of_week'] == day.title()]
-    
+
     return df
 
 def time_stats(df):
     """
     Displays statistics on the most frequent times of travel, when applicable
-    
+
     ARGS:
     df - Pandas DataFrame containing city data filtered by month and day
-    
+
     Returns:
     no data is returne dupon completion of the function
-    
+
     """
-    
+
     # drop frist column of data; seems to be a transaction ID of sorts and this is
     # unneccessary data for what we are looking at. removing it will speed the program up
     df = df.drop(df.columns[0],axis = 1)
@@ -137,7 +152,7 @@ def time_stats(df):
         print('The Most Popular Day of the Week is',popular_dow)
     else:
         print('The user sorted by day, so there is no most popular day')
-    
+
     # Displays the most common start hour
     # Create column that contains start hour
     df['hour'] = df['Start Time'].dt.hour
@@ -151,54 +166,54 @@ def time_stats(df):
 def station_stats(df):
     """
     Displays statistics on the most popular stations and trip.
-     
+
     ARGS:
     df - Pandas DataFrame containing city data filtered by month and day
-    
+
     Returns:
     no data is returned upon completion of the function
-    
+
     """
-    
+
     # drop frist column of data; seems to be a transaction ID of sorts and this is
     # unneccessary data for what we are looking at. removing it will speed the program up
     df = df.drop(df.columns[0],axis = 1)
-    
+
     print('\nCalculating The Most Popular Stations and Trip...\n')
     start_time = time.time()
 
     # TO DO: display most commonly used start station
     popular_start = df['Start Station'].mode()[0]
     print('The most Popular Start Station is:',popular_start)
-    
+
     # TO DO: display most commonly used end station
     popular_end = df['End Station'].mode()[0]
     print('The most Popular Start Station is:',popular_end)
-    
+
     # TO DO: display most frequent combination of start station and end station trip
     df['start and end'] = df['Start Station']+' and '+df['End Station']
     popular_trip = df['start and end'].mode()[0]
     print('The most frequent combination of Start and End stations is',popular_trip)
-    
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 def trip_duration_stats(df):
     """
     Displays statistics on the total and average trip duration.
-         
+
     ARGS:
     df - Pandas DataFrame containing city data filtered by month and day
-    
+
     Returns:
     no data is returned upon completion of the function
-    
+
     """
-    
+
     # drop frist column of data; seems to be a transaction ID of sorts and this is
     # unneccessary data for what we are looking at. removing it will speed the program up
     df = df.drop(df.columns[0],axis = 1)
-    
+
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
@@ -210,7 +225,7 @@ def trip_duration_stats(df):
     formatted_total = time.strftime("%H:%M:%S",total_time)
     # print out total duration
     print('Users spent {} (Hours:Mins:Secs) using the bikeshare'.format(formatted_total))
-    
+
     # TO DO: display mean travel time
     avg_duration = df['Trip Duration'].mean()
     # convert to seconds for time module
@@ -225,26 +240,26 @@ def trip_duration_stats(df):
 def user_stats(df):
     """
     Displays statistics on bikeshare users, if data exists.
-         
+
     ARGS:
     df - Pandas DataFrame containing city data filtered by month and day
-    
+
     Returns:
     no data is returned upon completion of the function
-    
+
     """
-    
+
     # drop frist column of data; seems to be a transaction ID of sorts and this is
     # unneccessary data for what we are looking at. removing it will speed the program up
     df = df.drop(df.columns[0],axis = 1)
-    
+
     print('\nCalculating User Stats...\n')
     start_time = time.time()
 
     # Displays counts of user types
     user_types = df['User Type'].value_counts()
     print('{} Subscribers and {} Customers rented bikes over this period.'.format(user_types ['Subscriber'], user_types['Customer']))
-    
+
     # Displays counts of gender if the dataframe has a gender column
     if 'Gender' in df.columns:
         # pulls number of users who didnt list gender
@@ -271,20 +286,20 @@ def user_stats(df):
         print('{} users did not report a birth year'.format(not_listed))
     else:
         print('The city you selected does not record birth year data for its users')
-    
+
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-'*40)
 
 def raw_data(df):
     """
-    Displays 5 lines of raw data if user requests it         
-    
+    Displays 5 lines of raw data if user requests it
+
     ARGS:
     df - Pandas DataFrame containing city data filtered by month and day
-    
+
     Returns:
     no data is returned upon completion of the function
-    
+
     """
     # sets follow up string to nothing, as only needed for a follow up inquiry
     follow_up = ""
@@ -313,7 +328,7 @@ def raw_data(df):
         # if invalid entry, will prompt user again.
         else:
             print('\nYour entry was not valid. Please try again\n.')
-    
+
 def main():
     while True:
         city, month, day = get_filters()
