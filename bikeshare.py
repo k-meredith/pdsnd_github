@@ -274,16 +274,16 @@ def user_stats(df):
     # Checks to ensure that birth year data exists before proceeding
     if 'Birth Year' in df.columns:
         # First, records # of users wihtout a birth year listed and drops those rows
-        not_listed = df['Birth Year'].isnull().sum()
+        no_byr_listed = df['Birth Year'].isnull().sum()
         df = df.dropna(axis = 0)
         # With NaN vlaues removed, calculates min, max, and mode.
-        oldest = int(df['Birth Year'].min())
-        youngest = int(df['Birth Year'].max())
-        most_common = int(df['Birth Year'].mode()[0])
-        print('The oldest renter was born in',oldest)
-        print('The youngest renter was born in',youngest)
-        print('The most common birth year in this group is',most_common)
-        print('{} users did not report a birth year'.format(not_listed))
+        oldest_byr = int(df['Birth Year'].min())
+        youngest_byr = int(df['Birth Year'].max())
+        most_common_byr = int(df['Birth Year'].mode()[0])
+        print('The oldest renter was born in',oldest_byr)
+        print('The youngest renter was born in',youngest_byr)
+        print('The most common birth year in this group is',most_common_byr)
+        print('{} users did not report a birth year'.format(no_byr_listed))
     else:
         print('The city you selected does not record birth year data for its users')
 
@@ -314,12 +314,12 @@ def raw_data(df):
     # will ask for another entry if user inputs an unanticiapted response
     while True:
         # User input request
-        view_d = input('Would you like to view 5{} lines of raw data? (yes or no) \n'.format(follow_up)).lower()
+        view_raw_data = input('Would you like to view 5{} lines of raw data? (yes or no) \n'.format(follow_up)).lower()
         # if no, then breaks loop
-        if view_d == 'no':
+        if view_raw_data == 'no':
             break
         # if yes, then prints 5 rows of data
-        if view_d == 'yes':
+        if view_raw_data == 'yes':
             print(df.iloc[row :(row+5)])
             # adds more to the user input request
             follow_up = " more"
